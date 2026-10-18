@@ -13,6 +13,8 @@ int main() {
     Playlist playlist;
     string line;
 
+    string temp = "";
+
     while (getline(cin, line)) {
         istringstream iss(line);
         string command;
@@ -20,11 +22,47 @@ int main() {
             continue;   // línea vacía
         }
 
-        if (command == "EXIT") {
+        else if (command == "EXIT") {
             break;
         }
-        (void)playlist;   // TODO: elimina esta línea al empezar a usar el objeto
 
+        else if(command == "LOAD") {
+        
+            temp = "";
+
+            if(!(iss >> temp)){
+            
+                cout << "INVALIDCMD" << endl;
+            
+            }
+            else{
+            
+                if(playlist.load(temp)){
+                
+                    cout << "OK " << temp.size() << endl;
+                
+                }
+                
+                else{
+                
+                    cout << "ERROR" << endl;
+                
+                }
+
+                
+            
+            }
+
+
+            
+        
+        }
+           
+        else if(command == "ADD"){
+        
+        
+        
+        }
         // TODO: procesa el resto de comandos (LOAD, ADD, DEL, LIST,
         //       PLAY, NEXT, PREV, TOTAL)
         // Recuerda: comando desconocido o argumentos inválidos -> INVALIDCMD
