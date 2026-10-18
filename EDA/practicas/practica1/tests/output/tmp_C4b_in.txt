@@ -1,0 +1,3 @@
+ADD bk01 2000 Libro_Uno cpp
+FINDTAG inexistente
+EXIT

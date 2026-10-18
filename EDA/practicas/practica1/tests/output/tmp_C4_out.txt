@@ -1,0 +1,5 @@
+ OK
+ OK
+COUNT 2
+bk01 (2000) Libro Uno [cpp]
+bk02 (2001) Libro Dos [cpp,java]

@@ -1,0 +1,138 @@
+% =====================================================================
+%  PLANTILLA DE ENTREGA — Entregable 02
+%  Sistemas Multimedia · Curso 2026/27 · Prof. Pedro Pernías
+%  Compilador: pdfLaTeX (Overleaf por defecto)
+%
+%  Esqueleto SIN enunciados: las instrucciones, los ejemplos y las
+%  rúbricas de cada apartado están en el documento del entregable.
+%  Aquí solo escribís vuestra respuesta.
+%
+%  Podéis ampliar o reducir los espacios y añadir filas a las tablas:
+%  las medidas son orientativas del tamaño de respuesta esperado.
+%  NO cambiéis la cabecera ni el orden de las partes y apartados.
+% =====================================================================
+
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[spanish]{babel}
+
+\usepackage[left=2.5cm,right=2.5cm,top=2.8cm,bottom=2.5cm]{geometry}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{needspace}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+
+% ------------------------------------------------------------
+% Cabecera y pie
+% ------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\small Entregable 02 \,\textperiodcentered\, Prof: Pedro Pernías}
+\fancyfoot[C]{\thepage}
+
+% ------------------------------------------------------------
+% Estructura mínima
+% ------------------------------------------------------------
+\newcommand{\parte}[1]{\par\vspace{1.3em}\noindent{\Large\bfseries #1}\par\vspace{0.4em}}
+\newcommand{\apartado}[1]{\par\vspace{0.9em}\needspace{6\baselineskip}%
+  \noindent{\large\bfseries #1}\par\vspace{0.3em}}
+% Mantiene un rótulo pegado a su tabla.
+\newcommand{\bloque}[2]{\par\noindent\begin{minipage}{\linewidth}%
+  \noindent#1\par\vspace{0.3em}#2\end{minipage}\par}
+
+% ------------------------------------------------------------
+% MACRO FIJA: tabla de integrantes (hasta 6). No la modifiquéis.
+% ------------------------------------------------------------
+\newcommand{\integrantes}{%
+  \noindent\begin{tabular}{c p{7.6cm} p{5.6cm}}
+  \toprule
+  \textbf{\#} & \textbf{Apellidos} & \textbf{Nombre} \\
+  \midrule
+  1 & \rule{0pt}{2.0em} & \\
+  \midrule
+  2 & \rule{0pt}{2.0em} & \\
+  \midrule
+  3 & \rule{0pt}{2.0em} & \\
+  \midrule
+  4 & \rule{0pt}{2.0em} & \\
+  \midrule
+  5 & \rule{0pt}{2.0em} & \\
+  \midrule
+  6 & \rule{0pt}{2.0em} & \\
+  \bottomrule
+  \end{tabular}}
+
+\setlist{itemsep=2pt, topsep=3pt}
+
+\begin{document}
+
+% =====================================================================
+%  CABECERA DE ENTREGA
+% =====================================================================
+\noindent{\LARGE\bfseries Entregable 2: El Lean Startup Canvas reducido de vuestro producto}\par
+\vspace{0.6em}
+\noindent\textbf{Grupo:} \hrulefill \quad \textbf{Producto o \emph{startup}:} \hrulefill
+
+\vspace{0.8em}
+\noindent\textbf{Integrantes del grupo (hasta 6):}\par\vspace{0.4em}
+\integrantes
+
+\parte{PARTE A. Cliente y problema}
+
+\apartado{A.1. Segmento de clientes}
+\vspace{4.0cm}
+
+\apartado{A.2. Problema}
+\noindent\begin{tabular}{p{0.8cm} p{6.6cm} p{6.4cm}}
+\toprule
+\textbf{\#} & \textbf{Problema (por orden de importancia)} & \textbf{Alternativa que usa hoy} \\
+\midrule
+1 \rule{0pt}{2.6em} &  &  \\
+\midrule
+2 \rule{0pt}{2.6em} &  &  \\
+\midrule
+3 \rule{0pt}{2.6em} &  &  \\
+\bottomrule
+\end{tabular}
+
+\parte{PARTE B. Solución, propuesta de valor y ventaja}
+
+\apartado{B.1. Solución}
+\noindent\begin{tabular}{p{0.8cm} p{6.6cm} p{6.4cm}}
+\toprule
+\textbf{\#} & \textbf{Característica} & \textbf{Problema al que responde} \\
+\midrule
+1 \rule{0pt}{2.6em} &  &  \\
+\midrule
+2 \rule{0pt}{2.6em} &  &  \\
+\midrule
+3 \rule{0pt}{2.6em} &  &  \\
+\bottomrule
+\end{tabular}
+
+\apartado{B.2. Propuesta de valor única}
+\vspace{3.0cm}
+
+\apartado{B.3. Ventaja especial (o ``injusta'')}
+\vspace{4.0cm}
+
+\parte{PARTE C. Riesgo clave y validación inicial}
+
+\apartado{C.1. Riesgo clave}
+\vspace{5.0cm}
+
+% =====================================================================
+%  DECLARACIÓN DE USO DE LA IA
+% =====================================================================
+\parte{Declaración de uso de la IA}
+\vspace{5.0cm}
+
+\end{document}

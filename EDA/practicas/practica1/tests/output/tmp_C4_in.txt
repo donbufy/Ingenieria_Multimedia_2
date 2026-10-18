@@ -1,0 +1,4 @@
+ADD bk01 2000 Libro_Uno cpp
+ADD bk02 2001 Libro_Dos cpp,java
+FINDTAG cpp
+EXIT

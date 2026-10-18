@@ -1,0 +1,3 @@
+LOAD data/sample_ok.txt
+GET bk01
+EXIT

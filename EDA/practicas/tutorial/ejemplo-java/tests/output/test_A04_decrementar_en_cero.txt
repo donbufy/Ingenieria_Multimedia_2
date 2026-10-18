@@ -1,0 +1,8 @@
+ERROR: A04: decrement en 0 debe devolver false
+  la condición esperada es falsa
+ERROR: A04: el valor no debe bajar de 0
+  esperado: 0
+  obtenido: -1
+===============================================================================
+comprobaciones: 2 | correctas: 0 | fallidas: 2
+Estado: FAILURE!

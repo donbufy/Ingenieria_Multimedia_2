@@ -1,0 +1,10 @@
+servidor        cliente
+
+socket()        socket()
+bind()
+
+                preparar IP/PORT
+listen()        conect()
+accept()        
+send/recv()     send/recv()
+close()         close()

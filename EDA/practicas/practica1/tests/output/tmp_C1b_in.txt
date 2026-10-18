@@ -1,0 +1,2 @@
+LOAD no_existe.txt
+EXIT

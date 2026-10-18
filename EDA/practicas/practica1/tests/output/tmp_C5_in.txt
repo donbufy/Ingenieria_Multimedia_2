@@ -1,0 +1,4 @@
+COMANDO_RARO
+GET
+ADD id01 2026 MyResource
+EXIT

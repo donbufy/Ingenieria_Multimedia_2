@@ -1,0 +1,6 @@
+bk01|1999|Clean Code|Software,CRAFT
+bk02|2008|Introduction to Algorithms|algorithms,CS,Algorithms
+bk03|2015|Design Patterns|patterns,OOP,design
+bk04|1994|The Pragmatic Programmer|craft,Software
+bk05|2011|Structure and Interpretation|cs,LISP,programming
+bk06|2020|Modern C++|cpp,Programming

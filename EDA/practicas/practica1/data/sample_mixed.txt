@@ -1,0 +1,6 @@
+bk01|1999|Clean Code|Software,craft
+invalid line without pipes
+|2000|No ID|tags
+bk03|2015|Design Patterns|patterns,OOP
+bk04|2010|Valid Book|TAGS,Tags,tags
+extrafield|2026|here|tags|five
