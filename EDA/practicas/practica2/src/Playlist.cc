@@ -408,12 +408,12 @@ bool Playlist:: load(const string& filename){
 
             
             }
-            catch(const invalid_argument){
+            catch(const invalid_argument&){
             
                 id = empty();
 
             }
-            catch(const out_of_range){
+            catch(const out_of_range&){
             
                 id = empty();
 
@@ -519,6 +519,8 @@ const Track* Playlist:: get(int pos) const{
         }
     
     }
+
+    return nullptr;
 
 }
 

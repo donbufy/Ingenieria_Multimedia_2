@@ -30,7 +30,7 @@ int main() {
         
             temp = "";
 
-            if(!(iss >> temp)){
+            if(!getline(iss,temp)){
             
                 cout << "INVALIDCMD" << endl;
             
@@ -60,9 +60,222 @@ int main() {
            
         else if(command == "ADD"){
         
+            string id = "";
+            string duration = "";
+            string title = "";
+            int duracion = -1;
+
+            bool senyal = true;
+            
+            if(getline(iss, id, ' ') && getline(iss, duration, ' ') && getline(iss,title)){
+
+                try {
+                
+                duracion = stoi(duration);
+                
+                }catch(const invalid_argument&){
+                
+                    senyal = false;
+
+                }
+            
+                
+            }
+
+            if(duracion < 0 && senyal){
+                
+                senyal = false;
+
+            
+            }
+
+            for(char &c: title){
+            
+                if(c == ' '){
+                
+                    senyal = false;
+                
+                }
+                if(c == '_'){
+
+                    c = ' ';
+
+                }
+            
+            }
+
+            if(senyal){
+            
+                Track cansion(id, title, duracion);
+                
+                playlist.add(cansion);
+
+            }
+            else{
+            
+                cout << "INVALIDCMD" << endl;
+            
+            }
+
+        }
+
+        else if(command == "DEL"){
         
+            temp = "";
+
+            if(!getline(iss, temp)){
+            
+                cout << "INVALIDCMD" << endl;
+            
+            }
+            else{
+            
+                if(playlist.removeById(temp)){
+                
+                    cout << "OK" << endl;
+                
+                }
+                else{
+                
+                    cout << "NOTFOUND" << endl;
+                
+                }
+            
+            }
         
         }
+
+        else if(command == "LIST"){
+            temp = "";
+
+            if(getline(iss, temp)){
+            
+                cout << "INVALIDCMD" << endl;
+            
+            }
+            else{
+                
+                if(playlist.size() == 0){
+                
+                    cout << 0 << endl;
+                
+                }
+                else{
+                
+                    cout << playlist.size() << endl << playlist;
+                
+                }
+            
+            }
+        
+        }
+
+        else if(command == "PLAY"){
+        
+            temp = "";
+
+            if(getline(iss, temp)){
+            
+                cout << "INVALIDCMD" << endl;
+            
+            }
+            else{
+            
+                if(playlist.size() == 0){
+                
+                    cout << "EMPTY" << endl;
+                
+                }
+                else{
+                
+                    cout << playlist.getCurrent() << endl;
+                
+                }
+            
+            }
+        
+        }
+
+        else if(command == "NEXT"){
+            
+            temp = "";
+
+            if(getline(iss, temp)){
+            
+                cout << "INVALIDCMD" << endl;
+            
+            }
+
+            else{
+            
+                if(playlist.size() == 0){
+                
+                    cout << "EMPTY" << endl;
+                
+                }
+                else{
+                
+                    playlist.next();
+
+                    cout << playlist;
+                
+                }
+            
+            }
+            
+        
+        }
+
+        else if(command == "NEXT"){
+            
+            temp = "";
+
+            if(getline(iss, temp)){
+            
+                cout << "INVALIDCMD" << endl;
+            
+            }
+
+            else{
+            
+                if(playlist.size() == 0){
+                
+                    cout << "EMPTY" << endl;
+                
+                }
+                else{
+                
+                    playlist.prev();
+
+                    cout << playlist;
+                
+                }
+            
+            }
+            
+        
+        }
+
+        else if(command == "TOTAL"){
+            
+            temp = "";
+
+            if(getline(iss,temp)){
+            
+                cout << "INVALIDCMD" << endl;
+            
+            }
+            
+            else{
+            
+                cout << playlist.totalDuration() << endl;
+            
+            }
+        
+        }
+        
+
+
         // TODO: procesa el resto de comandos (LOAD, ADD, DEL, LIST,
         //       PLAY, NEXT, PREV, TOTAL)
         // Recuerda: comando desconocido o argumentos inválidos -> INVALIDCMD
