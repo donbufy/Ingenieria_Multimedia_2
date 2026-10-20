@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <signal.h>
 #include "memoria_compartida.h"
-
+#include <netinet/in.h>
 #define CLAVE 1234
 void crear_arbol(struct memoria_compartida* datos);
 
@@ -44,6 +44,32 @@ int main(){
     
     }
 
+    struct sockaddr_in direccion;
+
+    direccion.sin_family = AF_INET;
+    direccion.sin_port = htons(8080);
+    direccion.sin_addr.s_addr = INADDR_ANY;
+
+    if (bind(server_fd, (struct sockaddr *)&direccion, sizeof(direccion)) < 0){
+    
+        perror("Error en bind\n");
+        exit(EXIT_FAILURE);
+
+    }
+
+    else{
+    
+        printf("Bind Activo\n");
+    
+    }
+
+    if (listen(server_fd, 5) < 0){
+    
+        perror("Error en listen\n");
+        
+        exit(EXIT_FAILURE);
+
+    }
 
 
     pid_t pid_servidor_real = getpid();
