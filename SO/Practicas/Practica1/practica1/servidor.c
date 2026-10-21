@@ -8,12 +8,33 @@
 #include <signal.h>
 #include "memoria_compartida.h"
 #include <netinet/in.h>
+
 #define CLAVE 1234
-void crear_arbol(struct memoria_compartida* datos);
+
+void crear_arbol(struct memoria_compartida* datos, int cliente_fd);
 
 void manejador(int sig);
 
 int main(){
+
+
+    
+
+    pid_t pid_servidor_real = getpid();
+
+    printf("Soy el proceso servidor, mi PID es %d\n", pid_servidor_real);
+
+    int shmid = shmget(CLAVE, sizeof(struct memoria_compartida), IPC_CREAT | 0666);
+
+    struct memoria_compartida *datos;
+
+    datos = (struct memoria_compartida *) shmat(shmid, NULL, 0);
+
+   
+
+    
+    signal(SIGUSR1, manejador);
+    signal(SIGUSR2, manejador);
 
 
     int server_fd = socket(AF_INET, SOCK_STREAM, 0 );
@@ -44,7 +65,7 @@ int main(){
     
     }
 
-    struct sockaddr_in direccion;
+    struct sockaddr_in direccion = {0};
 
     direccion.sin_family = AF_INET;
     direccion.sin_port = htons(8080);
@@ -59,10 +80,10 @@ int main(){
 
     else{
     
-        printf("Bind Activo\n");
+        printf("Bind Salio correctamente\n");
     
     }
-
+    
     if (listen(server_fd, 5) < 0){
     
         perror("Error en listen\n");
@@ -71,28 +92,38 @@ int main(){
 
     }
 
-
-    pid_t pid_servidor_real = getpid();
-
-    printf("Soy el proceso servidor, mi PID es %d\n", pid_servidor_real);
-
-    int shmid = shmget(CLAVE, sizeof(struct memoria_compartida), IPC_CREAT | 0666);
-
-    struct memoria_compartida *datos;
-
-    datos = (struct memoria_compartida *) shmat(shmid, NULL, 0);
-
-   
-
-    
-    signal(SIGUSR1, manejador);
-    signal(SIGUSR2, manejador);
-
-    
     while(1){
 
+        
 
-        datos->letra = '\0';
+    printf("A la espera de la conexion con el cliente\n");
+
+    struct sockaddr_in direccion_cliente = {0};
+
+    socklen_t tam = sizeof(direccion_cliente);
+    int cliente_fd = accept(server_fd, (struct sockaddr *)&direccion_cliente, &tam);
+    
+    if(cliente_fd < 0){
+    
+        perror("Fallo en accept\n");
+        
+        exit(EXIT_FAILURE);
+    
+    }
+
+    char buffer;
+    printf("A la espera del parametro\n");
+
+    int byte_recibido = recv(cliente_fd, &buffer, sizeof(buffer), 0);
+
+        if(byte_recibido < 1){
+        
+            perror("Error al recivir la letra\n");
+            exit(EXIT_FAILURE);
+        
+        }
+
+        datos->letra = buffer;
 
         datos->pid_servidor_real = pid_servidor_real;
 
@@ -107,22 +138,14 @@ int main(){
         datos->pid_Z_real = 0;
 
         datos->senyal = 0;
-        printf("A la espera de una senyal jiju\n");
+        
+
+
+
+        crear_arbol(datos, cliente_fd);
+
         pause();
-
-
-
-        crear_arbol(datos);
-
-        pause();
-
-
-
-
-            
-
-            
-            
+                    
         sleep(3);
 
 
@@ -152,11 +175,18 @@ int main(){
         printf("Va a morir Y con pid: %d\n", datos->pid_Y_real);
         kill(datos->pid_Y_real, SIGKILL);
 
-        while (wait(NULL) > 0){
+        while(wait(NULL) > 0){
         
             
-
+        
         }
+
+        close(cliente_fd);
+
+        shmctl(shmid, IPC_RMID, NULL);
+
+
+
     }
 
 }
@@ -169,10 +199,7 @@ int main(){
 
     //cuando llegue una señal, y los pids de la memoria compartida estén en 0 todos menos pid_servidor_real
 
-    
-
-
-void crear_arbol( struct memoria_compartida * datos ){
+void crear_arbol( struct memoria_compartida * datos, int cliente_fd ){
 
     printf("Soy el servidor y creo A\n");
 
@@ -229,9 +256,9 @@ void crear_arbol( struct memoria_compartida * datos ){
                 pause();
                 sleep(1);
                 
-                    kill(datos->pid_Z_real, SIGUSR2);
-                    execlp("ls", "ls", "-p", NULL);
-                    exit(0);
+                kill(datos->pid_Z_real, SIGUSR2);
+                execlp("ls", "ls", "-p", NULL);
+                exit(0);
                 
 
                 
@@ -269,9 +296,6 @@ void crear_arbol( struct memoria_compartida * datos ){
                     
                         
                         
-                    
-                    
-
                 }
 
                 else{
@@ -324,11 +348,16 @@ void crear_arbol( struct memoria_compartida * datos ){
                         signal(SIGUSR2, manejador);
 
                         pause();
-                        sleep(1);
+                        sleep(4);
 
                         kill(datos->pid_servidor_real, SIGUSR2);
                         
-                        kill(datos->pid_cliente, SIGUSR1);
+                        if(send(cliente_fd, datos, sizeof(*datos), 0) < 0){
+                        
+                            perror("Fallo al enviar los pids\n");
+                            exit(EXIT_FAILURE);
+                                                    
+                        }
                         exit(0);
 
                     }
