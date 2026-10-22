@@ -8,13 +8,14 @@
 #include <signal.h>
 #include "memoria_compartida.h"
 #include <netinet/in.h>
+#include <sys/wait.h>
 
 #define CLAVE 1234
 
 void crear_arbol(struct memoria_compartida* datos, int cliente_fd);
 
 void manejador(int sig);
-
+void manejador_c(int sig);
 int main(){
 
 
@@ -49,9 +50,10 @@ int main(){
     else{
     
         printf("socket creado correctamente\n");
-    
+        
     }
 
+    
     int opt = 1;
     if(setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0){
     
@@ -92,16 +94,32 @@ int main(){
 
     }
 
+    datos->terminar = 0;
+
     while(1){
 
-        
+    signal(SIGINT, manejador_c);
 
     printf("A la espera de la conexion con el cliente\n");
 
     struct sockaddr_in direccion_cliente = {0};
 
     socklen_t tam = sizeof(direccion_cliente);
-    int cliente_fd = accept(server_fd, (struct sockaddr *)&direccion_cliente, &tam);
+
+    if(datos->terminar == 0){
+
+        int cliente_fd = accept(server_fd, (struct sockaddr *)&direccion_cliente, &tam);
+
+    }
+
+    else{
+    
+        int cliente_fd = -1;
+        close(server_fd);
+        shmctl(shmid, IPC_RMID, NULL);
+        exit(1);
+    
+    }
     
     if(cliente_fd < 0){
     
@@ -139,7 +157,7 @@ int main(){
 
         datos->senyal = 0;
         
-
+        datos->terminar
 
 
         crear_arbol(datos, cliente_fd);
@@ -183,7 +201,7 @@ int main(){
 
         close(cliente_fd);
 
-        shmctl(shmid, IPC_RMID, NULL);
+        
 
 
 
@@ -394,23 +412,33 @@ void crear_arbol( struct memoria_compartida * datos, int cliente_fd ){
             }
         
         }
-    
+        
+
     }
 
 
 
 void manejador(int sig){
 
+    
+
+}
+
+void manejador_c(int sig){
+
     int shmid = shmget(CLAVE, sizeof(struct memoria_compartida), 0666);
 
-    struct memoria_compartida *datos;
+    struct memoria_compartida * datos;
 
     datos = (struct memoria_compartida *) shmat(shmid, NULL, 0);
+
     
-    datos->senyal = sig;
-
-    printf("Señal recibida\n");
 
 
+
+    
+    shmdt(shmid);
+
+    shmctl(shmid, IPC_RMID, NULL);
 
 }
