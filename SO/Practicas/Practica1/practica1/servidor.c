@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <unistd.h> 
 #include <sys/types.h>
@@ -8,14 +9,13 @@
 #include <signal.h>
 #include "memoria_compartida.h"
 #include <netinet/in.h>
-#include <sys/wait.h>
 
 #define CLAVE 1234
 
-void crear_arbol(struct memoria_compartida* datos, int cliente_fd);
+void crear_arbol(struct memoria_compartida* datos, int cliente_fd, int shmid);
 
 void manejador(int sig);
-void manejador_c(int sig);
+
 int main(){
 
 
@@ -26,12 +26,23 @@ int main(){
     printf("Soy el proceso servidor, mi PID es %d\n", pid_servidor_real);
 
     int shmid = shmget(CLAVE, sizeof(struct memoria_compartida), IPC_CREAT | 0666);
+    if(shmid < 0){
+    
+        perror("shmget");
+        exit(EXIT_FAILURE);
+    
+    }
 
     struct memoria_compartida *datos;
 
     datos = (struct memoria_compartida *) shmat(shmid, NULL, 0);
 
-   
+    if(datos == (void *) -1){
+
+        perror("shmat");
+        exit(EXIT_FAILURE);
+
+    }
 
     
     signal(SIGUSR1, manejador);
@@ -50,10 +61,9 @@ int main(){
     else{
     
         printf("socket creado correctamente\n");
-        
+    
     }
 
-    
     int opt = 1;
     if(setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0){
     
@@ -94,32 +104,16 @@ int main(){
 
     }
 
-    datos->terminar = 0;
-
     while(1){
 
-    signal(SIGINT, manejador_c);
+        
 
     printf("A la espera de la conexion con el cliente\n");
 
     struct sockaddr_in direccion_cliente = {0};
 
     socklen_t tam = sizeof(direccion_cliente);
-
-    if(datos->terminar == 0){
-
-        int cliente_fd = accept(server_fd, (struct sockaddr *)&direccion_cliente, &tam);
-
-    }
-
-    else{
-    
-        int cliente_fd = -1;
-        close(server_fd);
-        shmctl(shmid, IPC_RMID, NULL);
-        exit(1);
-    
-    }
+    int cliente_fd = accept(server_fd, (struct sockaddr *)&direccion_cliente, &tam);
     
     if(cliente_fd < 0){
     
@@ -157,10 +151,14 @@ int main(){
 
         datos->senyal = 0;
         
-        datos->terminar
+        if(buffer == 'Q'){
+        
+            break;
+        
+        }
 
 
-        crear_arbol(datos, cliente_fd);
+        crear_arbol(datos, cliente_fd, shmid);
 
         pause();
                     
@@ -207,6 +205,9 @@ int main(){
 
     }
 
+    close(server_fd);
+    shmctl(shmid, IPC_RMID, NULL);
+
 }
 
     
@@ -217,7 +218,7 @@ int main(){
 
     //cuando llegue una señal, y los pids de la memoria compartida estén en 0 todos menos pid_servidor_real
 
-void crear_arbol( struct memoria_compartida * datos, int cliente_fd ){
+void crear_arbol( struct memoria_compartida * datos, int cliente_fd, int shmid){
 
     printf("Soy el servidor y creo A\n");
 
@@ -242,8 +243,8 @@ void crear_arbol( struct memoria_compartida * datos, int cliente_fd ){
 
             kill(datos->pid_Z_real,SIGUSR2);
             execlp("pstree", "pstree", "-p", pid_str, NULL);
+            shmdt(datos);
             perror("Error ejecutando pstree");
-
             exit(1);
 
     }
@@ -275,6 +276,8 @@ void crear_arbol( struct memoria_compartida * datos, int cliente_fd ){
                 sleep(1);
                 
                 kill(datos->pid_Z_real, SIGUSR2);
+
+                shmdt(datos);
                 execlp("ls", "ls", "-p", NULL);
                 exit(0);
                 
@@ -305,7 +308,7 @@ void crear_arbol( struct memoria_compartida * datos, int cliente_fd ){
 
                     sleep(1);
                     
-                    
+                    shmdt(datos);
                     kill(datos->pid_Z_real,SIGUSR2);
 
                     execlp("ls", "ls", "-p", NULL);
@@ -376,6 +379,9 @@ void crear_arbol( struct memoria_compartida * datos, int cliente_fd ){
                             exit(EXIT_FAILURE);
                                                     
                         }
+
+                        shmdt(datos);
+
                         exit(0);
 
                     }
@@ -397,8 +403,10 @@ void crear_arbol( struct memoria_compartida * datos, int cliente_fd ){
 
 
                             kill(datos->pid_Z_real, SIGUSR2);
-                            execlp("pstree", "pstree", "-p", pid_str, NULL);
 
+                            shmdt(datos);
+                            execlp("pstree", "pstree", "-p", pid_str, NULL);
+                            
                             perror("Error");
 
                             exit(1);
@@ -421,24 +429,5 @@ void crear_arbol( struct memoria_compartida * datos, int cliente_fd ){
 void manejador(int sig){
 
     
-
-}
-
-void manejador_c(int sig){
-
-    int shmid = shmget(CLAVE, sizeof(struct memoria_compartida), 0666);
-
-    struct memoria_compartida * datos;
-
-    datos = (struct memoria_compartida *) shmat(shmid, NULL, 0);
-
-    
-
-
-
-    
-    shmdt(shmid);
-
-    shmctl(shmid, IPC_RMID, NULL);
 
 }

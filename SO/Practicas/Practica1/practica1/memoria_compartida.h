@@ -23,7 +23,7 @@ struct memoria_compartida{
 
     int senyal;
 
-    int server_fd;
+    
 
 
 };

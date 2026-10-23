@@ -25,9 +25,9 @@ int main(int argc, char *argv[]){
 
     else{
         
-        char c[4] = {'A','B','X', 'Y'};
+        char c[5] = {'A','B','X', 'Y', 'Q'};
         int senal = 0;
-        for(int i = 0; i<4; i++){
+        for(int i = 0; i<5; i++){
         
             if (c[i] == argv[1][0]){
             
@@ -48,7 +48,7 @@ int main(int argc, char *argv[]){
 
         else{
         
-            printf("Escriba como argumento A, B, X o Y.\n");
+            printf("Escriba como argumento A, B, X o Y. (o Q para cerrar el servidor)\n");
         
         }
 
@@ -94,22 +94,29 @@ int main(int argc, char *argv[]){
 
 
         
+        if(argv[1][0] != 'Q'){
+        
+            struct memoria_compartida datos = {0};
 
-        struct memoria_compartida datos = {0};
-
         
 
         
-        if(recv(cliente_fd, &datos, sizeof(datos), 0) < 0){
-        
-            perror("Error al recivir los PIDS\n");
-            exit(EXIT_FAILURE);
-        
+            if(recv(cliente_fd, &datos, sizeof(datos), 0) < 0){
+            
+                perror("Error al recivir los PIDS\n");
+                exit(EXIT_FAILURE);
+            
+            }
+            
+            
+            printf("Los PIDS creados por el servidor son: %d, %d, %d, %d y %d\n", datos.pid_A_real, datos.pid_B_real, datos.pid_X_real, datos.pid_Y_real, datos.pid_Z_real);
+            
         }
         
-        
-        printf("Los PIDS creados por el servidor son: %d, %d, %d, %d y %d\n", datos.pid_A_real, datos.pid_B_real, datos.pid_X_real, datos.pid_Y_real, datos.pid_Z_real);
-        
+        close(cliente_fd);
+
     }
+
+    
 
 }
