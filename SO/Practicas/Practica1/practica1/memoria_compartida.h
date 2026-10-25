@@ -1,3 +1,7 @@
+//Jose Manuel Rico Lorenzo
+//DNI 51235628T
+//Correo UA: jmrl21@alu.ua.es
+
 #include <stdio.h>
 #include <unistd.h> 
 #include <sys/types.h>

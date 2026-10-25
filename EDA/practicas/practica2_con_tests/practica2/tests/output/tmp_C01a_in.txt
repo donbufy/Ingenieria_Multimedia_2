@@ -1,0 +1,3 @@
+LOAD data/playlist_ok.txt
+LIST
+EXIT

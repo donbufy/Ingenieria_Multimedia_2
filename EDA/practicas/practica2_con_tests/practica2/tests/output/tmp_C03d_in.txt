@@ -1,0 +1,4 @@
+ADD t01 100 Uno
+ADD t02 200 Dos
+PREV
+EXIT

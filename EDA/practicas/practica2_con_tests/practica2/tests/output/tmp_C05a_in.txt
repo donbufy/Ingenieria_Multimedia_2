@@ -1,0 +1,6 @@
+FOO
+ADD t01
+ADD t01 abc Titulo
+DEL
+LOAD
+EXIT

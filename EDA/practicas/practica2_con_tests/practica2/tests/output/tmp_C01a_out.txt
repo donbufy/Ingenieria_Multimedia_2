@@ -1,0 +1,8 @@
+OK 6
+SIZE 6
+> 1. t01 (5:54) Bohemian Rhapsody
+  2. t02 (8:02) Stairway to Heaven
+  3. t03 (5:01) Hotel California
+  4. t04 (2:05) Blitzkrieg Bop
+  5. t05 (9:43) Shine On
+  6. t06 (3:25) Should I Stay

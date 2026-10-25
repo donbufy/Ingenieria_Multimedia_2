@@ -1,0 +1,5 @@
+ADD t01 100 Uno
+ADD t02 200 Dos
+DEL t01
+LIST
+EXIT

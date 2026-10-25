@@ -1,0 +1,4 @@
+LOAD data/playlist_ok.txt
+LOAD no_existe.txt
+LIST
+EXIT

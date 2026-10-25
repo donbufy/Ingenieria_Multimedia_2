@@ -1,0 +1,5 @@
+
+ADD t01 100 Uno
+
+TOTAL
+EXIT

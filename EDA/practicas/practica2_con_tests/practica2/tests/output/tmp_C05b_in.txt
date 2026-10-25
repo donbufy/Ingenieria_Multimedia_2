@@ -1,0 +1,4 @@
+ADD t01 100 Uno sobrante
+LIST extra basura
+TOTAL algo
+EXIT

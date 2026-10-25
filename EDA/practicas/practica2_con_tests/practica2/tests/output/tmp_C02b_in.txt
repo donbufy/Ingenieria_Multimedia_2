@@ -1,0 +1,3 @@
+ADD t01 100 Uno
+ADD t01 200 Otro
+EXIT

@@ -1,0 +1,4 @@
+ADD t01 -5 Uno
+ADD t02 abc Dos
+ADD t03
+EXIT

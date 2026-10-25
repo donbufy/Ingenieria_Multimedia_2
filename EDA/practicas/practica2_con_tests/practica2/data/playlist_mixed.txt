@@ -1,0 +1,10 @@
+t01|354|Bohemian Rhapsody
+linea sin campos
+t02|abc|Duracion invalida
+|120|Sin id
+t03|-30|Duracion negativa
+t01|100|Id duplicado
+t04|125|Blitzkrieg Bop
+
+t05|205|Incorrecta|campo de mas
+t06|63|Ultima valida

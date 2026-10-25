@@ -1,0 +1,6 @@
+t01|354|Bohemian Rhapsody
+t02|482|Stairway to Heaven
+t03|301|Hotel California
+t04|125|Blitzkrieg Bop
+t05|583|Shine On
+t06|205|Should I Stay

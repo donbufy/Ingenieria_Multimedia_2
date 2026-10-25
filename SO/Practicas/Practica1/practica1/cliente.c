@@ -1,3 +1,7 @@
+//Jose Manuel Rico Lorenzo
+//DNI 51235628T
+//Correo UA: jmrl21@alu.ua.es
+
 #include <stdio.h>
 #include <unistd.h> 
 #include <sys/types.h>
@@ -19,7 +23,7 @@ int main(int argc, char *argv[]){
 
     if(argc != 2){
 
-        printf("Por favor escriba solo un argumento");
+        printf("Por favor escriba solo un argumento\n");
 
     }
 
@@ -42,7 +46,7 @@ int main(int argc, char *argv[]){
 
         printf("Soy el proceso cliente, mi PID es %d\n", pid_cliente);
         
-        printf("Recibo como argumento el caracter %c", argv[1][0]);
+        printf("Recibo como argumento el caracter %c\n", argv[1][0]);
 
         }
 
